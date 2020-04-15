@@ -35,4 +35,5 @@
     <string name="PG">PG</string>
     <string name="PJ">PJ</string>
     <string name="tabla_posiciones">Tabla de posiciones</string>
+    <string name="introduccion">Plataforma para la gestión de eventos deportivos</string>
 </resources>
