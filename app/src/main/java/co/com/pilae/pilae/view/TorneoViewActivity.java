@@ -11,6 +11,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.com.pilae.pilae.R;
+import co.com.pilae.pilae.entidades.Torneo;
+import co.com.pilae.pilae.persistencia.room.DataBaseHelper;
 import co.com.pilae.pilae.utilities.ActionBarUtil;
 
 public class TorneoViewActivity extends AppCompatActivity {
@@ -21,7 +23,7 @@ public class TorneoViewActivity extends AppCompatActivity {
 
     @BindView(R.id.deporteTorneoView)
     public TextView deporteTorneo;
-
+    DataBaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,18 +34,23 @@ public class TorneoViewActivity extends AppCompatActivity {
         loadTorneo();
     }
 
-    private void loadTorneo() {
-        nombreTorneo.setText("Liga postobón");
-        deporteTorneo.setText("Fútbol");
-    }
-
     private void initComponents() {
+        db = DataBaseHelper.getDBMainThread(this);
         actionBarUtil = new ActionBarUtil(this);
         actionBarUtil.setToolBar(getString(R.string.torneos));
     }
 
+    private void loadTorneo() {
+        String idTorneo = (String) getIntent().getExtras().getSerializable("id");
+        Torneo torneo = db.getTorneoDAO().findByIdTorneo(idTorneo);
+        nombreTorneo.setText(torneo.getNombre());
+        deporteTorneo.setText(torneo.getDeporte());
+    }
+
     public void goToEditarTorneo(View view) {
         Intent intent = new Intent(this, EdicionTorneoActivity.class);
+        String idTorneo = (String) getIntent().getExtras().getSerializable("id");
+        intent.putExtra("id",idTorneo);
         startActivity(intent);
     }
     @Override

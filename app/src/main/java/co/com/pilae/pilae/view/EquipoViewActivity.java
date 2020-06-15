@@ -10,8 +10,13 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.internal.Utils;
 import co.com.pilae.pilae.R;
+import co.com.pilae.pilae.entidades.Equipo;
+import co.com.pilae.pilae.entidades.Torneo;
+import co.com.pilae.pilae.persistencia.room.DataBaseHelper;
 import co.com.pilae.pilae.utilities.ActionBarUtil;
+import co.com.pilae.pilae.utilities.ParseUtil;
 
 public class EquipoViewActivity extends AppCompatActivity {
 
@@ -21,9 +26,7 @@ public class EquipoViewActivity extends AppCompatActivity {
 
     @BindView(R.id.torneoEquipoView)
     public TextView torneoEquipo;
-    @BindView(R.id.escudoEquipoView)
-    ImageView escudoEquipo;
-
+    DataBaseHelper db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,24 +34,22 @@ public class EquipoViewActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initComponents();
         loadEquipo();
+
     }
 
     private void initComponents() {
+        db = DataBaseHelper.getDBMainThread(this);
         actionBarUtil = new ActionBarUtil(this);
         actionBarUtil.setToolBar(getString(R.string.equipos));
     }
 
     private void loadEquipo() {
         String idEquipo = (String) getIntent().getExtras().getSerializable("id");
-        if("1".equals(idEquipo)){
-            nombreEquipo.setText("Deportivo cali");
-            torneoEquipo.setText("Liga postobon");
-            escudoEquipo.setImageResource(R.drawable.cali);
-        }else{
-            nombreEquipo.setText("Medellin");
-            torneoEquipo.setText("Liga postobon");
-            escudoEquipo.setImageResource(R.drawable.descarga);
-        }
+        Equipo equipo = db.getEquipoDAO().findByIdEquipo(idEquipo);
+        Torneo torneo = db.getTorneoDAO().findByIdTorneo(ParseUtil.intToString(equipo.getTorneo()));
+        nombreEquipo.setText(equipo.getNombre());
+        torneoEquipo.setText(torneo.getNombre());
+
     }
     @Override
     public boolean onSupportNavigateUp() {
@@ -57,7 +58,9 @@ public class EquipoViewActivity extends AppCompatActivity {
     }
 
     public void goToEditar(View view) {
+        String idEquipo = (String) getIntent().getExtras().getSerializable("id");
         Intent intent = new Intent(this,EdicionEquipoActivity.class);
+        intent.putExtra("id",idEquipo);
         startActivity(intent);
     }
 }

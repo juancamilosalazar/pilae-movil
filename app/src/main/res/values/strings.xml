@@ -10,7 +10,7 @@
     <string name="torneos">Torneos</string>
     <string name="digite_nombre_equipo">Digite el nombre del equipo</string>
     <string name="guardar">Guardar</string>
-    <string name="digite_torneo_del_equipo">Digite el torneo del equipo</string>
+    <string name="digite_torneo_del_equipo">Digite el id del torneo</string>
     <string name="registro_equipo">Registro del equipo</string>
     <string name="editar">Editar</string>
     <string name="edicion_equipo">Editar equipo</string>
@@ -36,4 +36,12 @@
     <string name="PJ">PJ</string>
     <string name="tabla_posiciones">Tabla de posiciones</string>
     <string name="introduccion">Plataforma para la gestión de eventos deportivos</string>
+    <string name="successfully">La información se ha guardado satisfactoriamente</string>
+    <string name="crearEquipo" />
+    <string name="crear_equipo">Crear equipo</string>
+    <string name="digite_deporte_equipo">Digite el deporte del equipo</string>
+    <string name="requerido">Campo requerido</string>
+    <string name="crear_torneo">Crear Torneo</string>
+    <string name="no_existe">No hay Torneos en base de datos</string>
+    <string name="seleccione_torneo">Seleccione torneo</string>
 </resources>

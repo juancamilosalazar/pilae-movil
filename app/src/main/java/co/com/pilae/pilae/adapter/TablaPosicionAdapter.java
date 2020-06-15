@@ -53,7 +53,7 @@ public class TablaPosicionAdapter extends BaseAdapter {
             holder = new TablaPosicionAdapter.ViewHolder(convertView);
             convertView.setTag(holder);
         }
-        holder.equipoPosicion.setText(tablaPosicionOut.get(position).getEquipo());
+        holder.equipoPosicion.setText(tablaPosicionOut.get(position).getEquipo().toString());
         holder.pj.setText(String.valueOf(tablaPosicionOut.get(position).getPartidosJugados()));
         holder.pg.setText(String.valueOf(tablaPosicionOut.get(position).getPartidosGanados()));
         holder.pp.setText(String.valueOf(tablaPosicionOut.get(position).getPartidosPerdidos()));

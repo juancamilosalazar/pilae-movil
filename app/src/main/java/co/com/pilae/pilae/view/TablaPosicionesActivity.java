@@ -43,10 +43,10 @@ public class TablaPosicionesActivity extends AppCompatActivity {
 
     private void loadTablaPosicion() {
 
-        tablaPosicions.add(new TablaPosicion(1L,0,0,0,0,0,0,0,0,"Medellin"));
-        tablaPosicions.add(new TablaPosicion(2L,0,0,0,0,0,0,0,0,"Cali"));
-        tablaPosicionAdapter = new TablaPosicionAdapter(this, tablaPosicions);
-        listViewTablaPosiciones.setAdapter(tablaPosicionAdapter);
+        //tablaPosicions.add(new TablaPosicion(1L,0,0,0,0,0,0,0,0,"Medellin"));
+        //tablaPosicions.add(new TablaPosicion(2L,0,0,0,0,0,0,0,0,"Cali"));
+        //tablaPosicionAdapter = new TablaPosicionAdapter(this, tablaPosicions);
+        //listViewTablaPosiciones.setAdapter(tablaPosicionAdapter);
     }
     @Override
     public boolean onSupportNavigateUp() {

@@ -18,13 +18,14 @@ import co.com.pilae.pilae.adapter.EquipoAdapter;
 import co.com.pilae.pilae.adapter.TorneoAdapter;
 import co.com.pilae.pilae.entidades.Equipo;
 import co.com.pilae.pilae.entidades.Torneo;
+import co.com.pilae.pilae.persistencia.room.DataBaseHelper;
 import co.com.pilae.pilae.utilities.ActionBarUtil;
 
 public class TorneoActivity extends AppCompatActivity {
 
     @BindView(R.id.listViewTorneo)
     public ListView listViewTorneo;
-
+    DataBaseHelper db;
     private TorneoAdapter torneoAdapter;
     private ActionBarUtil actionBarUtil;
     List<Torneo> torneoList = new ArrayList<>();
@@ -39,15 +40,16 @@ public class TorneoActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
+        db = DataBaseHelper.getDBMainThread(this);
         actionBarUtil = new ActionBarUtil(this);
         actionBarUtil.setToolBar(getString(R.string.torneos));
     }
 
     private void loadTorneos() {
-
-        torneoList.add(new Torneo(1,"Liga postobon","Fútbol"));
-        torneoAdapter = new TorneoAdapter(this, torneoList);
+        torneoList = db.getTorneoDAO().listar();
+        torneoAdapter = new TorneoAdapter(this,torneoList);
         listViewTorneo.setAdapter(torneoAdapter);
+
     }
     @Override
     public boolean onSupportNavigateUp() {

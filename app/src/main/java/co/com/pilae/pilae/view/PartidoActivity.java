@@ -39,8 +39,6 @@ public class PartidoActivity extends AppCompatActivity {
 
     private void loadPartidos() {
 
-        partidoList.add(new Partido("Medellin","cali","Noviembre 3","postobon","ida"));
-        partidoList.add(new Partido("cali","Medellin","Noviembre 7","postobon","vuelta"));
         partidoAdapter = new PartidoAdapter(this, partidoList);
         listViewPartido.setAdapter(partidoAdapter);
     }
