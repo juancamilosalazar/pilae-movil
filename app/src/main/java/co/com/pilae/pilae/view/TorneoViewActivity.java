@@ -24,6 +24,7 @@ public class TorneoViewActivity extends AppCompatActivity {
     @BindView(R.id.deporteTorneoView)
     public TextView deporteTorneo;
     DataBaseHelper db;
+    String idTorneo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +39,10 @@ public class TorneoViewActivity extends AppCompatActivity {
         db = DataBaseHelper.getDBMainThread(this);
         actionBarUtil = new ActionBarUtil(this);
         actionBarUtil.setToolBar(getString(R.string.torneos));
+        idTorneo = (String) getIntent().getExtras().getSerializable("id");
     }
 
     private void loadTorneo() {
-        String idTorneo = (String) getIntent().getExtras().getSerializable("id");
         Torneo torneo = db.getTorneoDAO().findByIdTorneo(idTorneo);
         nombreTorneo.setText(torneo.getNombre());
         deporteTorneo.setText(torneo.getDeporte());
@@ -49,7 +50,6 @@ public class TorneoViewActivity extends AppCompatActivity {
 
     public void goToEditarTorneo(View view) {
         Intent intent = new Intent(this, EdicionTorneoActivity.class);
-        String idTorneo = (String) getIntent().getExtras().getSerializable("id");
         intent.putExtra("id",idTorneo);
         startActivity(intent);
     }
@@ -61,11 +61,13 @@ public class TorneoViewActivity extends AppCompatActivity {
 
     public void goToPartidos(View view) {
         Intent intent = new Intent(this, PartidoActivity.class);
+        intent.putExtra("id",idTorneo);
         startActivity(intent);
     }
 
     public void goToTablaPosiciones(View view) {
         Intent intent = new Intent(this, TablaPosicionesActivity.class);
+        intent.putExtra("id",idTorneo);
         startActivity(intent);
     }
 }

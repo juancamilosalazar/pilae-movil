@@ -2,6 +2,7 @@ package co.com.pilae.pilae.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -53,7 +54,10 @@ public class EdicionTorneoActivity extends AppCompatActivity {
             torneo.setNombre(nombre);
             db.getTorneoDAO().update(torneo);
             finish();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
+
     }
 
     private boolean validarInformacion(String nombre, String deporte) {

@@ -3,6 +3,7 @@ package co.com.pilae.pilae.view;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.com.pilae.pilae.R;
 import co.com.pilae.pilae.entidades.Equipo;
+import co.com.pilae.pilae.entidades.TablaPosicion;
 import co.com.pilae.pilae.entidades.Torneo;
 import co.com.pilae.pilae.persistencia.room.DataBaseHelper;
 import co.com.pilae.pilae.utilities.ActionBarUtil;
@@ -61,6 +63,23 @@ public class RegistroEquipoActivity extends AppCompatActivity {
         return strings;
     }
 
+    public void guardarEquipo(View view) {
+        String nombreTorneo = spinner.getSelectedItem().toString();
+
+        String nombreEquipo = txtRegistroNombre.getText().toString();
+        String nombreDeporte = txtRegistroDeporte.getText().toString();
+        Integer idTorneo = (findIdTorneoByName(nombreTorneo));
+        if (validarInformacion(nombreEquipo, idTorneo,nombreDeporte)) {
+            Equipo equipo = getEquipo(nombreEquipo, idTorneo,nombreDeporte);
+            new InsercionEquipo().execute(equipo);
+            finish();
+            initTablaPosiciones(equipo.getNombre(),idTorneo);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+
+    }
+
     private class InsercionEquipo extends AsyncTask<Equipo, Void, Void> {
 
         @Override
@@ -72,20 +91,38 @@ public class RegistroEquipoActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
+
             super.onPostExecute(aVoid);
         }
     }
 
-    public void guardarEquipo(View view) {
-        String nombreTorneo = spinner.getSelectedItem().toString();
+    private void initTablaPosiciones(String nombreEquipo, Integer idTorneo) {
+        Equipo equipo = db.getEquipoDAO().findByNombreEquipo(nombreEquipo);
+        TablaPosicion tablaPosicion = new TablaPosicion();
+        tablaPosicion.setEquipo(equipo.getIdEquipo());
+        tablaPosicion.setTorneo(idTorneo);
+        tablaPosicion.setPuntos(0);
+        tablaPosicion.setPartidosEmpatados(0);
+        tablaPosicion.setPartidosPerdidos(0);
+        tablaPosicion.setPartidosGanados(0);
+        tablaPosicion.setPartidosJugados(0);
+        tablaPosicion.setGolesDiferencia(0);
+        tablaPosicion.setGolesFavor(0);
+        tablaPosicion.setGolesContra(0);
+        new InsercionTablaPosiciones().execute(tablaPosicion);
+    }
+    private class InsercionTablaPosiciones extends AsyncTask<TablaPosicion, Void, Void> {
 
-        String nombreEquipo = txtRegistroNombre.getText().toString();
-        String nombreDeporte = txtRegistroDeporte.getText().toString();
-        Integer idTorneo = (findIdTorneoByName(nombreTorneo));
-        if (validarInformacion(nombreEquipo, idTorneo,nombreDeporte)) {
-            Equipo equipo = getEquipo(nombreEquipo, idTorneo,nombreDeporte);
-            new InsercionEquipo().execute(equipo);
-            finish();
+        @Override
+        protected Void doInBackground(TablaPosicion... tablaPosicions) {
+            DataBaseHelper.getSimpleDB(getApplicationContext()).getTablaPosicionDAO().insert(tablaPosicions[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Toast.makeText(getApplicationContext(), getString(R.string.successfully), Toast.LENGTH_SHORT).show();
+            super.onPostExecute(aVoid);
         }
     }
 

@@ -12,20 +12,23 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.com.pilae.pilae.R;
+import co.com.pilae.pilae.entidades.Equipo;
 import co.com.pilae.pilae.entidades.Partido;
 import co.com.pilae.pilae.entidades.TablaPosicion;
+import co.com.pilae.pilae.persistencia.room.DataBaseHelper;
 
 public class TablaPosicionAdapter extends BaseAdapter {
 
     private final LayoutInflater inflater;
     private List<TablaPosicion> tablaPosicionOut;
     private List<TablaPosicion> yablaPosicionIn;
+    DataBaseHelper dataBaseHelper;
 
-
-    public TablaPosicionAdapter(Context context, List<TablaPosicion> tablaPosicions){
+    public TablaPosicionAdapter(Context context, List<TablaPosicion> tablaPosicions, DataBaseHelper db){
         tablaPosicionOut = tablaPosicions;
         yablaPosicionIn = tablaPosicions;
         inflater = LayoutInflater.from(context);
+        dataBaseHelper= db;
     }
 
     @Override
@@ -53,7 +56,8 @@ public class TablaPosicionAdapter extends BaseAdapter {
             holder = new TablaPosicionAdapter.ViewHolder(convertView);
             convertView.setTag(holder);
         }
-        holder.equipoPosicion.setText(tablaPosicionOut.get(position).getEquipo().toString());
+        Equipo equipo = dataBaseHelper.getEquipoDAO().findByIdEquipo(tablaPosicionOut.get(position).getEquipo().toString());
+        holder.equipoPosicion.setText(equipo.getNombre());
         holder.pj.setText(String.valueOf(tablaPosicionOut.get(position).getPartidosJugados()));
         holder.pg.setText(String.valueOf(tablaPosicionOut.get(position).getPartidosGanados()));
         holder.pp.setText(String.valueOf(tablaPosicionOut.get(position).getPartidosPerdidos()));

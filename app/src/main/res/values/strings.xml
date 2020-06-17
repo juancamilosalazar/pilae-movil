@@ -44,4 +44,7 @@
     <string name="crear_torneo">Crear Torneo</string>
     <string name="no_existe">No hay Torneos en base de datos</string>
     <string name="seleccione_torneo">Seleccione torneo</string>
+    <string name="generar_fixture">Generar fixture</string>
+    <string name="minimo_equipos_fixture">Deben de haber minimo dos equipos para generar un fixture</string>
+    <string name="fixture_generado">El fixture se a generado</string>
 </resources>

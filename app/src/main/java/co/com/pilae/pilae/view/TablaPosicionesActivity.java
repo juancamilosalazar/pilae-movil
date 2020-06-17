@@ -17,6 +17,7 @@ import co.com.pilae.pilae.R;
 import co.com.pilae.pilae.adapter.PartidoAdapter;
 import co.com.pilae.pilae.adapter.TablaPosicionAdapter;
 import co.com.pilae.pilae.entidades.TablaPosicion;
+import co.com.pilae.pilae.persistencia.room.DataBaseHelper;
 import co.com.pilae.pilae.utilities.ActionBarUtil;
 
 public class TablaPosicionesActivity extends AppCompatActivity {
@@ -27,6 +28,7 @@ public class TablaPosicionesActivity extends AppCompatActivity {
     private TablaPosicionAdapter tablaPosicionAdapter;
     private ActionBarUtil actionBarUtil;
     List<TablaPosicion> tablaPosicions = new ArrayList<>();
+    DataBaseHelper db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,16 +39,17 @@ public class TablaPosicionesActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
+
+        db = DataBaseHelper.getDBMainThread(this);
         actionBarUtil = new ActionBarUtil(this);
         actionBarUtil.setToolBar(getString(R.string.tabla_posiciones));
     }
 
     private void loadTablaPosicion() {
-
-        //tablaPosicions.add(new TablaPosicion(1L,0,0,0,0,0,0,0,0,"Medellin"));
-        //tablaPosicions.add(new TablaPosicion(2L,0,0,0,0,0,0,0,0,"Cali"));
-        //tablaPosicionAdapter = new TablaPosicionAdapter(this, tablaPosicions);
-        //listViewTablaPosiciones.setAdapter(tablaPosicionAdapter);
+        String idTorneo = (String) getIntent().getExtras().getSerializable("id");
+        tablaPosicions = db.getTablaPosicionDAO().findByIdTorneo(idTorneo);
+        tablaPosicionAdapter = new TablaPosicionAdapter(this, tablaPosicions,db);
+        listViewTablaPosiciones.setAdapter(tablaPosicionAdapter);
     }
     @Override
     public boolean onSupportNavigateUp() {

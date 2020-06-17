@@ -2,6 +2,7 @@ package co.com.pilae.pilae.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -60,7 +61,10 @@ public class RegistroTorneoActivity extends AppCompatActivity {
             Torneo torneo = getTorneo(nombreTorneo,nombreDeporte);
             new InsercionTorneo().execute(torneo);
             finish();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
+
     }
     private Torneo getTorneo(String nombreTorneo,String deporteTorneo) {
         Torneo torneo = new Torneo();

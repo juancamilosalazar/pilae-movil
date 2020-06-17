@@ -12,19 +12,22 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.com.pilae.pilae.R;
+import co.com.pilae.pilae.entidades.Equipo;
 import co.com.pilae.pilae.entidades.Partido;
+import co.com.pilae.pilae.persistencia.room.DataBaseHelper;
 
 public class PartidoAdapter extends BaseAdapter {
 
     private final LayoutInflater inflater;
     private List<Partido> partidossOut;
     private List<Partido> partidosIn;
+    DataBaseHelper dataBaseHelper;
 
-
-    public PartidoAdapter(Context context, List<Partido> partidos){
+    public PartidoAdapter(Context context, List<Partido> partidos, DataBaseHelper db){
         partidossOut = partidos;
         partidosIn = partidos;
         inflater = LayoutInflater.from(context);
+        dataBaseHelper= db;
     }
 
     @Override
@@ -44,6 +47,7 @@ public class PartidoAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         PartidoAdapter.ViewHolder holder;
         if (convertView != null) {
             holder = (PartidoAdapter.ViewHolder) convertView.getTag();
@@ -52,12 +56,19 @@ public class PartidoAdapter extends BaseAdapter {
             holder = new PartidoAdapter.ViewHolder(convertView);
             convertView.setTag(holder);
         }
-        holder.equipoLocalPartido.setText(partidossOut.get(position).getEquipoLocal());
-        holder.equipoVisitantePartido.setText(partidossOut.get(position).getEquipoVisitante());
+        Equipo equipoLocal = getEquipo(partidossOut.get(position).getEquipoLocal().toString());
+        Equipo equipoVisitante =getEquipo(partidossOut.get(position).getEquipoVisitante().toString());
+
+        holder.equipoLocalPartido.setText(equipoLocal.getNombre());
+        holder.equipoVisitantePartido.setText(equipoVisitante.getNombre());
         holder.idaVuelta.setText(partidossOut.get(position).getIdaVuelta());
         holder.fechaPartido.setText(partidossOut.get(position).getFecha());
 
         return convertView;
+    }
+
+    private Equipo getEquipo(String id) {
+        return dataBaseHelper.getEquipoDAO().findByIdEquipo(id);
     }
 
     class ViewHolder {
